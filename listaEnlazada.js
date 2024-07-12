@@ -54,20 +54,89 @@ class ListaEnlazada {
         }
         return undefined;
     }
+
+    borrarConVariablesAuxiliares(valorABuscar) {
+        //1.Verificar si la lista enlazada está vacía
+        if(this.inicio == null) {
+            return undefined;
+        }
+        
+        //2. Verificar si el valor que estoy buscando está al inicio
+        if(this.inicio.valor == valorABuscar) {
+            this.inicio = this.inicio.siguiente;
+            return;
+        }
+
+        //2. Verificar si el valor que estoy buscando está al final
+        if(this.final.valor == valorABuscar) {
+            let aux = this.inicio;
+            while(aux.siguiente != this.final) {
+                aux = aux.siguiente;
+            }
+            this.final = aux;
+            aux.siguiente = null;
+        }
+
+        let aux = this.inicio;
+        let auxAnterior = this.inicio;
+        aux = this.inicio.siguiente;
+        let auxSiguiente = aux.siguiente;
+
+        while(aux != this.final) {
+            if(aux.valor == valorABuscar) {
+                auxAnterior.siguiente = auxSiguiente;
+                return;
+            }
+            auxAnterior = aux;
+            aux = aux.siguiente;
+            auxSiguiente = aux.siguiente;
+        }
+
+    }
+
+    borrarSiguiente(valorABuscar) {
+        //1.Verificar si la lista enlazada está vacía
+        if(this.inicio == null) {
+            return;
+        }
+
+        //2. Verificar si el valor que estoy buscando está al inicio
+        if(this.inicio.valor == valorABuscar) {
+            this.inicio = this.inicio.siguiente;
+            return;
+        }
+
+        //3.Recorremos la lista en busca del valor a borrar
+        for(let aux = this.inicio; aux != null; aux = aux.siguiente) {
+            if (aux.siguiente.valor == valorABuscar) {
+
+                if(aux.siguiente == this.final) {
+                    this.final = aux;
+                }
+                aux.siguiente = aux.siguiente.siguiente;
+                return;
+            }
+        }
+    }
 }
 
 let listaDeComida = new ListaEnlazada();
 listaDeComida.mostrar();
 
-listaDeComida.insertarValor({nombre:'Pizza', cantidad: 5}); //imprime objetos
+listaDeComida.insertarValor('Sopes');
+/* listaDeComida.insertarValor({nombre:'Pizza', cantidad: 5}); */ //imprime objetos
 listaDeComida.insertarValor('Pizza');
+listaDeComida.insertarValor('Enchiladas');
 listaDeComida.insertarValor('Tacos');
+listaDeComida.insertarValor('Ensalada');
 listaDeComida.insertarValor('Pastel');
 listaDeComida.mostrar();
 
 let valorABuscar;
 valorABuscar = 'Pastel';
 valorEncontrado = listaDeComida.buscar(valorABuscar);
+//typeof siempre retorna una cadena, por eso hay que verificar de que manera se esta haciendo la validación
+
 if(typeof valorEncontrado !== 'undefined') {
     console.log(`El valor ${valorABuscar} SÍ existe en la lista enlazada`);
 }else {
@@ -81,3 +150,53 @@ if(valorEncontrado !== undefined) {
 }else {
     console.log(`El valor ${valorABuscar} NO existe en la lista enlazada`);
 }
+
+console.log('Lista antes de borrar');
+listaDeComida.mostrar();
+let valorABorrar = 'Tacos';
+listaDeComida.borrarSiguiente(valorABorrar);
+console.log('Lista después de borrar');
+listaDeComida.mostrar();
+
+valorABorrar = 'Pastel';
+listaDeComida.borrarSiguiente(valorABorrar);
+console.log('Lista después de borrar');
+listaDeComida.mostrar();
+
+valorABorrar = 'Sopes';
+listaDeComida.borrarSiguiente(valorABorrar);
+console.log('Lista después de borrar');
+listaDeComida.mostrar();
+
+let listaDeAnimales = new ListaEnlazada();
+listaDeAnimales.mostrar();
+
+listaDeAnimales.insertarValor('Gato');
+/* listaDeComida.insertarValor({nombre:'Pizza', cantidad: 5}); */ //imprime objetos
+listaDeAnimales.insertarValor('Perro');
+listaDeAnimales.insertarValor('Loro');
+listaDeAnimales.insertarValor('Pajaro');
+listaDeAnimales.insertarValor('Delfín');
+listaDeAnimales.insertarValor('Tigre');
+listaDeAnimales.mostrar();
+
+let animalABorrar;
+animalABorrar = 'Gato';
+console.log(`Después de borrar ${animalABorrar}`);
+listaDeAnimales.borrarConVariablesAuxiliares(animalABorrar);
+listaDeAnimales.mostrar();
+
+animalABorrar = 'Pajaro';
+console.log(`Después de borrar ${animalABorrar}`);
+listaDeAnimales.borrarConVariablesAuxiliares(animalABorrar);
+listaDeAnimales.mostrar();
+
+animalABorrar = 'Tigre';
+console.log(`Después de borrar ${animalABorrar}`);
+listaDeAnimales.borrarConVariablesAuxiliares(animalABorrar);
+listaDeAnimales.mostrar();
+
+animalABorrar = 'Conejo';
+console.log(`Después de borrar ${animalABorrar}`);
+listaDeAnimales.borrarConVariablesAuxiliares(animalABorrar);
+listaDeAnimales.mostrar();
